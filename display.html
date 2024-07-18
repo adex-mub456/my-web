@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Student Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        @media (max-width: 600px) {
+            th, td {
+                font-size: 14px;
+                padding: 6px;
+            }
+        }
+        .result-block {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Student Results</h1>
+        <div id="allResultsContainer"></div>
+    </div>
+    <!-- display.html -->
+<div id="resultsContainer">
+    <!-- Results displayed dynamically here -->
+</div>
+
+<button onclick="clearResults()">Clear Results</button>
+
+<script>
+function clearResults() {
+    let resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.innerHTML = ''; // Clear the content inside the results container
+    alert("Results cleared.");
+}
+</script>
+
+    <button onclick="clearResults()">Clear Results</button>
+    <script>
+        function displayAllResults() {
+            const allResultsContainer = document.getElementById('allResultsContainer');
+            const allResults = JSON.parse(localStorage.getItem('allResults')) || [];
+            allResultsContainer.innerHTML = '';
+            allResults.forEach(result => {
+                const resultBlock = document.createElement('div');
+                resultBlock.className = 'result-block';
+                let resultText = `<strong>Name:</strong> ${result.name} <br> <strong>Admin Number:</strong> ${result.adminNumber} <br> <strong>Results:</strong> <br>`;
+                result.results.forEach(r => {
+                    resultText += `${r.subject}: Total: ${r.total.toFixed(2)}, Average: ${r.average.toFixed(2)}, Grade: ${r.grade} <br>`;
+                });
+                resultBlock.innerHTML = resultText;
+                allResultsContainer.appendChild(resultBlock);
+            });
+        }
+<!-- display.html -->
+
+
+function clearResults() {
+    // Implement logic to clear the displayed results
+    let resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.innerHTML = ''; // Clear the content inside the results container
+    alert("Results cleared.");
+}
+
+function clearResults() {
+    alert("Function triggered."); // Check if function is triggered
+    let resultsContainer = document.getElementById('resultsContainer');
+    console.log(resultsContainer); // Check if resultsContainer is correctly identified
+    resultsContainer.innerHTML = ''; // Clear the content inside the results container
+    alert("Results cleared."); // Check if alert is shown
+}
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayAllResults();
+        });
+    </script>
+</body>
+</html>

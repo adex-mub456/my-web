@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Student Scores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        @media (max-width: 600px) {
+            th, td {
+                font-size: 14px;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Scores</h1>
+        <div>
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name"><br>
+            <label for="adminNumber">Administration Number:</label>
+            <input type="text" id="adminNumber" name="adminNumber"><br>
+        </div>
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>1st Term</th>
+                <th>2nd Term</th>
+                <th>3rd Term</th>
+            </tr>
+            <tr class="subject" id="Physics">
+                <td>Physics</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="Chemistry">
+                <td>Chemistry</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="Biology">
+                <td>Biology</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="Mathematics">
+                <td>Mathematics</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="English">
+                <td>English</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="DataProcessing">
+                <td>Data Processing</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="Economics">
+                <td>Economics</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="Agriculture">
+                <td>Agriculture</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="Geography">
+                <td>Geography</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+            <tr class="subject" id="CivicEducation">
+                <td>Civic Education</td>
+                <td><input type="number" class="term1"></td>
+                <td><input type="number" class="term2"></td>
+                <td><input type="number" class="term3"></td>
+            </tr>
+        </table>
+        <button onclick="calculateResults()">Calculate Results</button>
+        <button onclick="copyResults()">Copy Results</button>
+        <table id="resultTable">
+            <tr>
+                <th>Subject</th>
+                <th>Total</th>
+                <th>Average</th>
+                <th>Grade</th>
+            </tr>
+        </table>
+        <div id="overallResult"></div>
+    </div>
+    <script>
+        function calculateResults() {
+            const subjects = document.querySelectorAll('.subject');
+            const resultTable = document.getElementById('resultTable');
+            let totalSum = 0;
+            resultTable.innerHTML = `
+                <tr>
+                    <th>Subject</th>
+                    <th>Total</th>
+                    <th>Average</th>
+                    <th>Grade</th>
+                </tr>`;
+            subjects.forEach(subject => {
+                const term1 = parseFloat(subject.querySelector('.term1').value) || 0;
+                const term2 = parseFloat(subject.querySelector('.term2').value) || 0;
+                const term3 = parseFloat(subject.querySelector('.term3').value) || 0;
+                const total = term1 + term2 + term3;
+                const average = total / 3;
+                totalSum += total;
+                let grade;
+                if (average >= 75) {
+                    grade = 'A';
+                } else if (average >= 65) {
+                    grade = 'B';
+                } else if (average >= 55) {
+                    grade = 'C';
+                } else if (average >= 45) {
+                    grade = 'D';
+                } else {
+                    grade = 'F';
+                }
+                const row = resultTable.insertRow();
+                row.insertCell(0).textContent = subject.id;
+                row.insertCell(1).textContent = total.toFixed(2);
+                row.insertCell(2).textContent = average.toFixed(2);
+                row.insertCell(3).textContent = grade;
+            });
+            const overallPercentage = (totalSum / 1100) * 100;
+            const overallResult = document.getElementById('overallResult');
+            overallResult.textContent = `Overall Percentage: ${overallPercentage.toFixed(2)}%`;
+            saveResults();
+        }
+
+        function copyResults() {
+            const resultTable = document.getElementById('resultTable');
+            const overallResult = document.getElementById('overallResult').textContent;
+            let resultText = '';
+            for (let row of resultTable.rows) {
+                for (let cell of row.cells) {
+                    resultText += cell.textContent + '\t';
+                }
+                resultText += '\n';
+            }
+            resultText += '\n' + overallResult;
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert('Results copied to clipboard!');
+            }, (err) => {
+                alert('Failed to copy results: ', err);
+            });
+        }
+
+        function saveResults() {
+            const name = document.getElementById('name').value;
+            const adminNumber = document.getElementById('adminNumber').value;
+            const subjects = document.querySelectorAll('.subject');
+            let results = [];
+            subjects.forEach(subject => {
+                const term1 = parseFloat(subject.querySelector('.term1').value) || 0;
+                const term2 = parseFloat(subject.querySelector('.term2').value) || 0;
+                const term3 = parseFloat(subject.querySelector('.term3').value) || 0;
+                const total = term1 + term2 + term3;
+                const average = total / 3;
+                let grade;
+                if (average >= 75) {
+                    grade = 'A';
+                } else if (average >= 65) {
+                    grade = 'B';
+                } else if (average >= 55) {
+                    grade = 'C';
+                } else if (average >= 45) {
+                    grade = 'D';
+                } else {
+                    grade = 'F';
+                }
+                results.push({subject: subject.id, total, average, grade});
+            });
+            const allResults = JSON.parse(localStorage.getItem('allResults')) || [];
+            allResults.push({name, adminNumber, results});
+            localStorage.setItem('allResults', JSON.stringify(allResults));
+        }
+    </script>
+</body>
+</html>
